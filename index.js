@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const validUrl = require('valid-url');
 const app = express();
 
 // Basic Configuration
@@ -28,8 +29,7 @@ let id = 1;
 
 app.post('/api/shorturl', (req, res) => {
   const url = req.body.url;
-  const urlRegex = /^https?:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/\S*)?$/;
-  if (!urlRegex.test(url)) {
+  if (!validUrl.isWebUri(url)) {
     return res.json({ error: 'invalid url' });
   }
   const short_url = id++;
